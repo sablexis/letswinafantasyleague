@@ -6,7 +6,7 @@ fantasy football league. Built incrementally, module by module.
 ## Roadmap (priority order)
 
 1. **Draft Strategy** (v1 — target: Aug 28 draft)
-   - Value-Based Drafting (VBD) cheat sheet using FantasyPros MVP rankings/projections
+   - Value-Based Drafting (VBD) cheat sheet using FantasyPros PRO rankings/projections
    - Positional tiers (startable value) + sleepers/handcuffs list
 2. **In-season lineup optimization** — start/sit recommendations by matchup
 3. **Trade analysis** — value calculators using our VBD framework
@@ -22,11 +22,11 @@ and eventually a dashboard.
 config/
   league_settings.yaml   # single source of truth: roster, scoring, payouts, etc.
 data/
-  raw/                   # untouched pulls from FantasyPros / nflverse
+  raw/                   # FantasyPros manual CSV exports + nflverse pulls
   processed/             # cleaned, joined, ready-for-analysis tables
 src/
   data_ingestion/
-    fetch_fantasypros.py # pulls ADP + projections/rankings
+    fetch_fantasypros.py # LOADS manually-exported FantasyPros CSVs (PRO tier has no API/bulk export)
     fetch_nflverse.py    # pulls historical stats via nfl_data_py
   analysis/
     vbd.py               # replacement-level + VBD score calculation
@@ -39,19 +39,29 @@ output/                    # final cheat sheet CSVs/exports
 
 ## Setup
 
+This project is developed on macOS (bash/zsh) — commands below assume that.
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-FantasyPros MVP tier requires an authenticated session/API — set credentials
-via environment variables (see `fetch_fantasypros.py` TODO) rather than
-hardcoding them in source:
+We're on FantasyPros **PRO** (not MVP/HOF) — cheaper, and it includes everything
+this project needs (Premium ECR, Custom Scoring Settings, Custom Cheat Sheets,
+Trade Analyzer, Waiver Assistant). PRO does **not** include bulk CSV export or
+API Access (those are HOF-only) — no credentials/env vars needed here.
 
-```bash
-export FANTASYPROS_API_KEY="..."   # add to ~/.zshrc to persist
-```
+Instead, `fetch_fantasypros.py` loads **manually downloaded** CSVs:
+1. Log into fantasypros.com, set Custom Scoring Settings to match our
+   league (Half-PPR + roster from `config/league_settings.yaml`).
+2. Use the page's own "Export to CSV" button for rankings/projections/ADP.
+3. Save the file into `data/raw/` using the naming convention documented
+   at the top of `fetch_fantasypros.py`.
+4. Re-run the loader to pull it into the pipeline.
+
+See `fetch_fantasypros.py`'s module docstring for exact filenames and a
+staleness-check TODO (warn if a downloaded file is >7 days old).
 
 ## League settings
 
