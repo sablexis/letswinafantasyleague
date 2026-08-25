@@ -87,6 +87,15 @@ def fetch_adp(scoring_format: str = "half-ppr") -> pd.DataFrame:
     Returns:
         DataFrame with at minimum: player_name, position, team, adp
     """
+
+    Overalldf = pd.read_csv('fantasypros_adp_overall.csv')
+    QBdf = pd.read_csv('fantasypros_projections_qb.csv')
+    RBdf = pd.read_csv('fantasypros_projections_rb.csv')
+    WRdf = pd.read_csv('fantasypros_projections_wr.csv')
+    TEdf = pd.read_csv('fantasypros_projections_te.csv')
+    DSTdf = pd.read_csv('fantasypros_projections_dst.csv')
+    Kdf = pd.read_csv('fantasypros_projections_k.csv')
+
     raise NotImplementedError(
         "TODO: implement manual-CSV load for ADP. See module docstring for "
         "the expected file path and validation steps."
@@ -105,6 +114,9 @@ def fetch_projections(position: str) -> pd.DataFrame:
         DataFrame with at minimum: player_name, team, position,
         and the relevant projected stat columns (varies by position).
     """
+
+    
+
     if position not in FANTASYPROS_POSITIONS:
         raise ValueError(f"Unknown position: {position}")
     raise NotImplementedError(
