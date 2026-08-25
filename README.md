@@ -39,15 +39,19 @@ output/                    # final cheat sheet CSVs/exports
 
 ## Setup
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 FantasyPros MVP tier requires an authenticated session/API — set credentials
 via environment variables (see `fetch_fantasypros.py` TODO) rather than
-hardcoding them in source.
+hardcoding them in source:
+
+```bash
+export FANTASYPROS_API_KEY="..."   # add to ~/.zshrc to persist
+```
 
 ## League settings
 
