@@ -1,0 +1,16 @@
+# Core data/scraping
+pandas>=2.0
+numpy>=1.26
+requests>=2.31
+beautifulsoup4>=4.12
+pyyaml>=6.0
+lxml>=5.0
+
+# nflverse data access (Python port)
+nfl_data_py>=0.3.1
+
+# Tiering / clustering for the cheat sheet
+scikit-learn>=1.4
+
+# Notebooks
+jupyter>=1.0

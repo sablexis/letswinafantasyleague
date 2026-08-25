@@ -1,0 +1,73 @@
+# League configuration — single source of truth for scoring & roster math.
+# Update this file (not code) whenever league settings change or are confirmed
+# once we know the platform (Sleeper/ESPN/Yahoo).
+
+league:
+  num_teams: 10
+  draft_type: snake
+  draft_order: random  # revealed day-of (Aug 28)
+
+roster:
+  # Starting lineup slots. FLEX can be RB/WR/TE.
+  starters:
+    QB: 1
+    RB: 2
+    WR: 2
+    TE: 1
+    FLEX: 1        # eligible: RB, WR, TE
+    DEF: 1
+    K: 1
+  bench_size: 6
+  flex_eligible_positions: [RB, WR, TE]
+
+scoring:
+  type: half_ppr
+  reception: 0.5
+  # Standard defaults below — CONFIRM against actual platform scoring once
+  # league site is known; these are placeholders for common half-PPR leagues.
+  passing:
+    yards_per_point: 0.04   # 1 pt per 25 yards
+    td: 4
+    interception: -2
+  rushing:
+    yards_per_point: 0.1    # 1 pt per 10 yards
+    td: 6
+  receiving:
+    yards_per_point: 0.1
+    td: 6
+  fumble_lost: -2
+  # DEF/K scoring TBD — placeholder, use platform default scoring until confirmed
+  defense:
+    sack: 1
+    interception: 2
+    fumble_recovery: 2
+    td: 6
+    safety: 2
+  kicker:
+    pat_made: 1
+    fg_made: 3   # flat placeholder; real leagues often tier by distance
+
+payouts:
+  weekly_high_score_bonus_usd: 5
+  weekly_high_score_weeks: [1, 14]   # weeks 1-14 inclusive
+
+playoffs:
+  weeks: [15, 17]
+  teams_qualifying: 6
+  bye_seeds: [1, 2]
+  format: single_elimination
+
+trade_deadline_week: 11
+
+waivers:
+  type: FAAB
+  budget: 100
+
+trade_review:
+  type: league_vote_veto
+  threshold_fraction: 0.6667   # 2/3
+
+tiebreakers:
+  - head_to_head_record
+  - total_points_scored
+  - points_against
